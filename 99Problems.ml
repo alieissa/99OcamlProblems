@@ -11,3 +11,10 @@ let find_kth k lst =
         | [] -> None
         | hd::tl -> if counter = k then Some hd else aux (counter + 1) tl
     in aux 0 lst;;
+
+(* Reverse list. Replicate List.rev *)
+let reverse_list lst = 
+    let rec aux acc = function
+        | [] -> acc
+        | hd::tl -> aux (hd::acc) tl
+    in aux [] lst;; 
