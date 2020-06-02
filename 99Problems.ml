@@ -18,3 +18,6 @@ let reverse_list lst =
         | [] -> acc
         | hd::tl -> aux (hd::acc) tl
     in aux [] lst;; 
+
+(* Find if list is a palindrome *)
+let is_palindrome lst = reverse_list lst = reverse_list lst;;
