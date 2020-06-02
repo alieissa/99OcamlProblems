@@ -21,3 +21,12 @@ let reverse_list lst =
 
 (* Find if list is a palindrome *)
 let is_palindrome lst = reverse_list lst = reverse_list lst;;
+
+(* Flatten list. Type of nested list provided in exercise*)
+type 'a node = | One of 'a | Many of 'a node list;;
+let flatten lst = 
+    let rec aux acc = function 
+        | [] -> acc 
+        | One hd::tl -> aux hd::acc tl (* Could have simply used concat operator @ here to avoid reversing list at end*)
+        | Many hd::tl -> aux (aux acc hd) tl
+    in reverse_lst (aux [] lst);;
