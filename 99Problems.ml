@@ -30,3 +30,15 @@ let flatten lst =
         | One hd::tl -> aux hd::acc tl (* Could have simply used concat operator @ here to avoid reversing list at end*)
         | Many hd::tl -> aux (aux acc hd) tl
     in reverse_lst (aux [] lst);;
+
+(* Pack consecutive duplicates of list elements into sublists *)
+let pack lst = 
+  let rec aux curr_pack acc_pack = function
+    | [] -> acc_pack 
+    | hd::tl -> match curr_pack with
+      | [] -> aux [hd] acc_pack tl
+      | chd::_ -> 
+          if(chd = hd) 
+          then aux (hd::curr_pack) acc_pack tl
+          else aux [hd] (curr_pack::acc_pack) tl 
+  in aux [] [] lst;;
