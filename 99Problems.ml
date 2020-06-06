@@ -44,19 +44,35 @@ let pack lst =
   in aux [] [] lst;;
 
 (* Encode a list. *)
-let encode lst = 
+let encode lst =
     let rec aux acc = function
         | [] -> acc
         | hd::tl -> aux ((List.length hd, List.hd hd)::acc) tl
     in List.rev (aux [] (pack lst));;
-    
+
 (* Encode a list. Solution proposed in OCaml website. Uses less memory *)
 let encode_solution lst = 
     let rec aux counter acc = function
         | [] -> acc
         | [x] -> (counter + 1, x)::acc
         | a::(b::_ as t) -> 
-            if a = b 
-            then aux (counter + 1) acc t 
+            if a = b
+            then aux (counter + 1) acc t
             else aux 0 ((counter + 1, a)::acc) t
     in List.rev (aux 0 [] lst);;
+
+type 'a rle = | One of 'a | Many of int*'a;;
+let modified_encode lst =
+  let get_type count elem =
+    if count = 1
+    then One elem
+    else Many (count, elem)
+  in 
+  let rec aux counter acc = function
+    | [] -> acc
+    | [x] -> (get_type counter x)::acc
+    | a::(b::_ as t) ->
+        if a = b
+        then aux (counter + 1) acc t
+        else aux 0 ((get_type (counter + 1) a)::acc) t
+  in List.rev (aux 0 [] lst);;
