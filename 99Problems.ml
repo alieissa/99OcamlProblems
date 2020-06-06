@@ -34,11 +34,29 @@ let flatten lst =
 (* Pack consecutive duplicates of list elements into sublists *)
 let pack lst = 
   let rec aux curr_pack acc_pack = function
-    | [] -> acc_pack 
+    | [] -> acc_pack
     | hd::tl -> match curr_pack with
       | [] -> aux [hd] acc_pack tl
-      | chd::_ -> 
-          if(chd = hd) 
+      | chd::_ ->
+          if(chd = hd)
           then aux (hd::curr_pack) acc_pack tl
-          else aux [hd] (curr_pack::acc_pack) tl 
+          else aux [hd] (curr_pack::acc_pack) tl
   in aux [] [] lst;;
+
+(* Encode a list. *)
+let encode lst = 
+    let rec aux acc = function
+        | [] -> acc
+        | hd::tl -> aux ((List.length hd, List.hd hd)::acc) tl
+    in List.rev (aux [] (pack lst));;
+    
+(* Encode a list. Solution proposed in OCaml website. Uses less memory *)
+let encode_solution lst = 
+    let rec aux counter acc = function
+        | [] -> acc
+        | [x] -> (counter + 1, x)::acc
+        | a::(b::_ as t) -> 
+            if a = b 
+            then aux (counter + 1) acc t 
+            else aux 0 ((counter + 1, a)::acc) t
+    in List.rev (aux 0 [] lst);;
