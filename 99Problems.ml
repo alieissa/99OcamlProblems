@@ -86,3 +86,9 @@ let compress lst = match lst with
             | l -> acc
         in aux [List.hd lst'] lst'
 ;;
+(* Duplicate elements of a list *)
+let duplicate lst =
+    let rec aux acc = function
+        | [] -> acc
+        | hd::tl -> aux (hd::hd::acc) tl
+    in List.rev (aux [] lst);;
