@@ -76,3 +76,13 @@ let modified_encode lst =
         then aux (counter + 1) acc t
         else aux 0 ((get_type (counter + 1) a)::acc) t
   in List.rev (aux 0 [] lst);;
+
+(* Remove consecutive duplicates from list. *)
+let compress lst = match lst with
+    | [] | [_] as l -> l
+    | lst' -> 
+        let rec aux acc = function 
+            | a::(b::_ as t) -> if a = b then aux acc t else aux (b::acc) t 
+            | l -> acc
+        in aux [List.hd lst'] lst'
+;;
