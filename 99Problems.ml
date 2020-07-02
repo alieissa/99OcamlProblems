@@ -92,3 +92,30 @@ let duplicate lst =
         | [] -> acc
         | hd::tl -> aux (hd::hd::acc) tl
     in List.rev (aux [] lst);;
+
+(** Binary Trees *)
+type 'a binary_tree =
+    | Empty
+    | Node of 'a * 'a binary_tree * 'a binary_tree;;
+
+(** 57: Binary search trees (dictionaries) *)
+let  take lst n =
+  let rec aux acc n = function
+    | [] -> []
+    | hd::tl -> if n = 0 then acc else aux (hd::acc) (n-1) tl in
+  List.rev (aux [] n lst);;
+
+let rec drop lst n =
+  match lst with
+  | [] -> []
+  | _::tl -> if n = 0 then lst else drop tl (n-1);;
+
+(** Assumes sorted array. This actually constructs a balanced binary search tree
+ Question 57 asks simply for a search tree
+ *)
+let rec construct lst = match  lst with
+  | [] -> Empty
+  | _ -> let length = (List.length lst) in
+      let left = construct (take lst (length / 2)) in
+      let right = construct (drop lst (length / 2 + 1)) in
+      Node ((List.nth lst (length / 2)), left,  right);;
