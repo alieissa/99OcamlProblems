@@ -119,3 +119,11 @@ let rec construct lst = match  lst with
       let left = construct (take lst (length / 2)) in
       let right = construct (drop lst (length / 2 + 1)) in
       Node ((List.nth lst (length / 2)), left,  right);;
+
+(** 61. Count leaves of a binary tree *)
+let count_leaves tree =
+    let rec aux count = function
+    | Empty -> count
+    | Node(_,Empty, Empty) -> count + 1
+    | Node(_, l, r) -> aux (aux count l) r
+  in aux 0 tree;;
